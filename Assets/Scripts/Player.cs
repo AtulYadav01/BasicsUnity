@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private 
+    private bool jumpKeyPressed;
+    private float horizontalInput;
 
     // Start is called before the first frame update
     void Start()
@@ -16,12 +17,19 @@ public class Player : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space) == true){
-            GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.VelocityChange);
+            jumpKeyPressed = true;
         }
+        horizontalInput = Input.GetAxis("Horizontal");
     }
 
     private void FixedUpdate()
     {
-        
+        if (jumpKeyPressed == true)
+        {
+            GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.VelocityChange);
+            jumpKeyPressed = false;
+        }
+
+        GetComponent<Rigidbody>().velocity = new Vector3 (horizontalInput, GetComponent<Rigidbody>().velocity.y, 0);
     }
 }
